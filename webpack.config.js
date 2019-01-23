@@ -10,10 +10,42 @@ const path = require('path');
 module.exports = {
   // production, development, none
   mode: 'production',
-
-  entry: './src/index.js',
+  // string | object | array
+  entry: {
+    app: './src/index.js'
+  },
+  // Here the application start executing and webpack starts bundling
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    // the target directory for all output files
+    // must be an absolute path (using node.js path module)
+    path: path.resolve(__dirname, 'dist'),
+    // string for solid filename
+    // [name] for multi-module filename
+    // [chunkhash]: hashes based on each chunks' content
+    // [contenthash]: a unique hash based on the content of an asset
+    filename: '[name].js',
+    // the url to the output directory resolved relative to the HTML page
+    // publicPath: '/assets/'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.less$/,
+        use: [
+          {
+            // create style nodes from JS strings
+            loader: 'style-loader'
+          },
+          {
+            // translates CSS into CommonJS
+            loader: 'css-loader'
+          },
+          {
+            // compile Less to CSS
+            loader: 'less-loader'
+          }
+        ]
+      }
+    ]
   }
 };
