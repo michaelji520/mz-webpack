@@ -6,8 +6,28 @@
  */
 
 const path = require('path');
+// optimize css assets plugin
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// This plugin extracts CSS into separate files.
+// It creates a CSS file per JS file which contains CSS.
+// It supports On-Demand-Loading of CSS and SourceMaps.
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const devMode = process.env.NODE_ENV !== 'production';
+console.log(devMode);
 
 module.exports = {
+  optimization: {
+    minimizer: [
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
+    })
+  ],
   // production, development, none
   mode: 'production',
   // string | object | array
@@ -30,20 +50,22 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.less$/,
+        test: /\.css$/,
         use: [
           {
             // create style nodes from JS strings
-            loader: 'style-loader'
+            loader: MiniCssExtractPlugin.loader,
           },
           {
             // translates CSS into CommonJS
             loader: 'css-loader'
-          },
-          {
-            // compile Less to CSS
-            loader: 'less-loader'
           }
+        ]
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader'
         ]
       }
     ]
