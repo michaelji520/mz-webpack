@@ -32,7 +32,8 @@ module.exports = {
   mode: 'production',
   // string | object | array
   entry: {
-    app: './src/index.js'
+    app: './src/index.js',
+    print: './src/print.js'
   },
   // Here the application start executing and webpack starts bundling
   output: {
@@ -49,7 +50,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src');
+      '@': path.resolve(__dirname, 'src')
     }
   },
   module: {
