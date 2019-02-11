@@ -6,35 +6,50 @@
  */
 
 const path = require('path');
-// optimize css assets plugin
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// This plugin extracts CSS into separate files.
-// It creates a CSS file per JS file which contains CSS.
-// It supports On-Demand-Loading of CSS and SourceMaps.
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// generate default index.html
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+// clean the /dist folder before each build
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
-console.log(devMode);
 
 module.exports = {
-  optimization: {
-    minimizer: [
-      new OptimizeCSSAssetsPlugin({})
-    ]
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
-    })
-  ],
   // production, development, none
-  mode: 'production',
+  mode: 'development',
   // string | object | array
   entry: {
     app: './src/index.js',
     print: './src/print.js'
   },
+  devtool: 'inline-source-map',
+  devServer: {
+    // host: '0.0.0.0',
+    port: 9527,
+    // https: true,
+    contentBase: './dist',
+    compress: true,
+    // shows a full-screen overlay in the browser when there are compiler errors or warnings
+    overlay: {
+      errors: true,
+      warnings: false
+    },
+    historyApiFallback: {
+      rewrites: [
+        {from : /.*/, to: path.posix.join('/', 'index.html')}
+      ]
+    }
+  },
+  plugins: [
+    new CleanWebpackPlugin(['dist']),
+    new HtmlWebpackPlugin({
+      favicon: './assets/favicon.ico',
+      title: 'Development',
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    })
+  ],
   // Here the application start executing and webpack starts bundling
   output: {
     // the target directory for all output files
@@ -44,7 +59,7 @@ module.exports = {
     // [name] for multi-module filename
     // [chunkhash]: hashes based on each chunks' content
     // [contenthash]: a unique hash based on the content of an asset
-    filename: '[name].js',
+    filename: '[name].bundle.js',
     // the url to the output directory resolved relative to the HTML page
     // publicPath: '/assets/'
   },
@@ -52,46 +67,5 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, 'src')
     }
-  },
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          {
-            // create style nodes from JS strings
-            loader: MiniCssExtractPlugin.loader,
-          },
-          {
-            // translates CSS into CommonJS
-            loader: 'css-loader'
-          }
-        ]
-      },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader'
-        ]
-      },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: [
-          'file-loader'
-        ]
-      },
-      {
-        test: /\.(csv|tsv)$/,
-        use : [
-          'csv-loader'
-        ]
-      },
-      {
-        test: /\.(xml)$/,
-        use: [
-          'xml-loader'
-        ]
-      }
-    ]
   }
 };
