@@ -1,2 +1,5 @@
-# mz-ui
-My personal ui (based on Vue)
+My Personal Webpack
+===================
+
+This is a repository for practicing webpack config.
+
