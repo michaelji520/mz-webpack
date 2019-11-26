@@ -1,11 +1,16 @@
 {
   "presets": [ // presets launch sequence: bottom-to-top
     ["@babel/preset-env", {
-      "useBuiltIns": "usage"
-    }]
+      "useBuiltIns": "usage", // trans apis, load on demand
+      "corejs": 2 // babel-polyfill
+    }],
+    "@babel/preset-react"
   ],
   "plugins": [
+    // analyse decorators
     ["@babel/plugin-proposal-decorators", {"legacy": true}],
-    ["@babel/plugin-proposal-class-properties", {"loose": true}]
+    // analyse class attributes
+    ["@babel/plugin-proposal-class-properties", {"loose": true}],
+    "@babel/plugin-transform-runtime"
   ]
 }

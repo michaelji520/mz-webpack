@@ -1,9 +1,5 @@
-
-@log
-class A {
-  a = 1
-}
-
-function log(target) {}
-
-[1,2,3].includes(a)
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+//
+// ReactDOM.render(<div>hello</div>, document.getElementById('app'));
+import Vue from 'vue';
