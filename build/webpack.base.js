@@ -1,4 +1,5 @@
 const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
   entry: {
@@ -7,6 +8,14 @@ module.exports = {
   module: {
     // loaders follow the sequence of bottom-to-top, right-to-left
     rules: [
+      // {
+      //   test: /\.ts$/,
+      //   use: 'babel-loader'
+      // },
+      {
+        test: /\.vue$/,
+        use: 'vue-loader'
+      },
       {
         test: /\.js$/,
         use: 'babel-loader'
@@ -41,7 +50,7 @@ module.exports = {
     ]
   },
   plugins: [
-
+    new VueLoaderPlugin()
   ],
   output: {
     filename: 'app.js',
