@@ -3,18 +3,18 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = {
   entry: {
-    app: path.resolve(__dirname, '../src/index.js')
+    app: path.resolve(__dirname, '../src/main.ts')
   },
   module: {
     // loaders follow the sequence of bottom-to-top, right-to-left
     rules: [
-      // {
-      //   test: /\.ts$/,
-      //   use: 'babel-loader'
-      // },
       {
         test: /\.vue$/,
         use: 'vue-loader'
+      },
+      {
+        test: /\.ts$/,
+        use: 'babel-loader'
       },
       {
         test: /\.js$/,
@@ -34,19 +34,6 @@ module.exports = {
         test: /\.(woff|ttf|eot|)$/,
         use: 'file-loader'
       }
-      // {
-      //   test: /\.css$/,
-      //   use: ['style-loader', {
-      //     loader: 'css-loader',
-      //     options: {
-      //       importLoaders: 2
-      //     }
-      //   }, 'postcss-loader', 'less-loader']
-      // },
-      // {
-      //   test: /\.less$/,
-      //   use: ['style-loader', 'css-loader', 'less-loader']
-      // }
     ]
   },
   plugins: [
