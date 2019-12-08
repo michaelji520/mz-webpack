@@ -42,13 +42,39 @@ const base = require('./webpack.base');
         use: 'babel-loader'
       },
       {
-        test: /\.(jpe?g|png|bmp|gif|tif)$/,
-        use: {
-          loader: 'file-loader',
-          options: {
-            name: 'image/[contenthash].[ext]' // use url-loader to turn small img to base64
+        test: /\.(jpe?g|png|bmp|webp|gif|tif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'image/[contenthash].[ext]' // use url-loader to turn small img to base64
+            }
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              },
+              // optipng.enabled: false will disable optipng
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.90],
+                speed: 4
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              // the webp option will enable WEBP
+              webp: {
+                quality: 75
+              }
+            }
           }
-        }
+        ]
       },
       {
         test: /\.(woff|ttf|eot|)$/,
