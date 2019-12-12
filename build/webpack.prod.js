@@ -8,6 +8,7 @@ const TerserWebpackPlugin = require('terser-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const PurgecssWebpackPlugin = require('purgecss-webpack-plugin'); // remove unused class
 const glob = require('glob');
+const AddAssetHtmlCdnWebpackPlugin = require('add-asset-html-cdn-webpack-plugin');
 
 const base = require('./webpack.base');
 
@@ -19,6 +20,9 @@ const base = require('./webpack.base');
   output: {
     filename: 'app.[contenthash].js',
     path: path.resolve(__dirname, '../dist')
+  },
+  externals: { // ignored libraries, load from cdn, doesn't pack
+    jquery: '$'
   },
   resolve: {
     alias: {
@@ -110,5 +114,8 @@ const base = require('./webpack.base');
         collapseWhitespace: true // remove white spaces
       }
     }),
+    new AddAssetHtmlCdnWebpackPlugin(true, {
+      jquery: 'https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js',
+    })
   ],
  });

@@ -18,6 +18,9 @@ module.exports = merge(base, {
       '@': path.resolve(__dirname, '../src')
     }
   },
+  optimization: {
+    usedExports: true // turn tree shaking in development mode
+  },
   devServer: {
     port: 9527,
     compress: true, // active gzip compress

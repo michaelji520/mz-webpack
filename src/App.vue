@@ -16,6 +16,8 @@ export default {
       avatar: avatar,
       small: small
     };
+  },
+  mounted() {
   }
 }
 </script>
