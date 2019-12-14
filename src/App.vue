@@ -12,7 +12,7 @@ import small from './assets/images/small-avatar.jpg';
 export default {
   data() {
     return {
-      name: 'Hello World',
+      name: 'Hello World22233www3',
       avatar: avatar,
       small: small
     };

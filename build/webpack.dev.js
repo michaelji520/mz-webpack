@@ -3,6 +3,8 @@ const merge = require('webpack-merge');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const base = require('./webpack.base');
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin');
 
 module.exports = merge(base, {
   mode: 'development',
@@ -23,6 +25,7 @@ module.exports = merge(base, {
   },
   devServer: {
     port: 9527,
+    hot: true,
     compress: true, // active gzip compress
     contentBase: path.resolve(__dirname, '../dist'), // launch webpack service on `dist` directory
   },
@@ -63,7 +66,13 @@ module.exports = merge(base, {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../public/index.html'),
       filename: 'index.html'
-    })
+    }),
+    new DllReferencePlugin({
+      manifest: path.resolve(__dirname,'../dll/manifest.json')
+    }),
+    new AddAssetHtmlWebpackPlugin({ // NOTE: This plugin requires html-webpack-plugin@^2.10.0.
+      filepath: path.resolve(__dirname, '../dll/vue.dll.js')
+    }),
   ],
 });
 
