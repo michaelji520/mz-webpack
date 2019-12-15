@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const base = require('./webpack.base');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 const AddAssetHtmlWebpackPlugin = require('add-asset-html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = merge(base, {
   mode: 'development',
@@ -62,6 +63,8 @@ module.exports = merge(base, {
     ]
   },
   plugins: [
+    new webpack.NamedModulesPlugin(), // 当开启 HMR 的时候使用该插件会显示模块的相对路径，
+    new webpack.HotModuleReplacementPlugin(),
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../public/index.html'),
