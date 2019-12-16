@@ -1,6 +1,7 @@
 <template>
   <div class="child">{{'fdsafdsa'}}
     <div>fdfa</div>
+    <div class="lala">fdfa</div>
   </div>
 </template>
 
@@ -17,5 +18,8 @@ export default {
   color: red;
   background: blue;
   width: 300px;
+  .lala {
+    font-size: 30px;
+  }
 }
 </style>

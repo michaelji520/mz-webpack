@@ -9,6 +9,8 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const PurgecssWebpackPlugin = require('purgecss-webpack-plugin'); // remove unused class
 const glob = require('glob');
 const AddAssetHtmlCdnWebpackPlugin = require('add-asset-html-cdn-webpack-plugin');
+// const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin'); // calculate operation time
+// const smw = new SpeedMeasureWebpackPlugin();
 
 const base = require('./webpack.base');
 
@@ -33,7 +35,28 @@ const base = require('./webpack.base');
     minimizer: [
       new OptimizeCssAssetsWebpackPlugin(),
       new TerserWebpackPlugin()
-    ]
+    ],
+    splitChunks: {
+      chunks: 'async', // split async modules
+      minSize: 30000, // split chunk when module > 30k
+      maxSize: 0,
+      minChunks: 1, // refernence times
+      maxAsyncRequests: 6, // max number of async request
+      maxInitialRequests: 4, // max number of initial request
+      automaticNameDelimiter: '~',
+      automaticNameMaxLength: 30,
+      cacheGroups: {
+        vendors: { // split third-party modules first
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10 // priority
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
   },
   module: {
     rules: [
