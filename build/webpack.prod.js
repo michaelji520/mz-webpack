@@ -9,8 +9,9 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const PurgecssWebpackPlugin = require('purgecss-webpack-plugin'); // remove unused class
 const glob = require('glob');
 const AddAssetHtmlCdnWebpackPlugin = require('add-asset-html-cdn-webpack-plugin');
-// const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin'); // calculate operation time
-// const smw = new SpeedMeasureWebpackPlugin();
+// const SpeedMeasurePlugin = require('speed-measure-webpack-plugin'); // calculate operation time
+// const smp = new SpeedMeasurePlugin();
+// const Happypack = require('happypack');
 
 const base = require('./webpack.base');
 
@@ -66,7 +67,9 @@ const base = require('./webpack.base');
       },
       {
         test: /\.js$/,
-        use: 'babel-loader'
+        use: 'babel-loader',
+        // include: path.resolve(__dirname, '../src'),
+        exclude: /node_modules/
       },
       {
         test: /\.(jpe?g|png|bmp|webp|gif|tif)$/,
@@ -119,6 +122,14 @@ const base = require('./webpack.base');
     ]
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../public/index.html'),
+      filename: 'index.html',
+      minify: {
+        removeAttributeQuotes: true, // remove quotes of element attribute
+        collapseWhitespace: true // remove white spaces
+      }
+    }),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash].css'
@@ -129,15 +140,7 @@ const base = require('./webpack.base');
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, '../dist')]
     }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html'),
-      filename: 'index.html',
-      minify: {
-        removeAttributeQuotes: true, // remove quotes of element attribute
-        collapseWhitespace: true // remove white spaces
-      }
-    }),
-    new AddAssetHtmlCdnWebpackPlugin(true, {
+    new AddAssetHtmlCdnWebpackPlugin(true, { // using this plugin would cause SpeedMeasurePlugin error, don't know why
       jquery: 'https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js',
     })
   ],
