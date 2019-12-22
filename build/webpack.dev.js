@@ -13,8 +13,10 @@ module.exports = merge(base, {
     app: path.resolve(__dirname, '../src/main.js')
   },
   output: {
-    filename: 'app.js',
-    path: path.resolve(__dirname, '../dist')
+    path: path.resolve(__dirname, '../dist'),
+    filename: 'js/[name].js',
+    publicPath: '/',
+    chunkFilename: 'js/[name].js'
   },
   resolve: {
     alias: {
@@ -31,6 +33,7 @@ module.exports = merge(base, {
     contentBase: path.resolve(__dirname, '../dist'), // launch webpack service on `dist` directory
   },
   module: {
+    noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
     rules: [
       {
         test: /\.vue$/,

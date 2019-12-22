@@ -48,18 +48,23 @@ const base = require('./webpack.base');
       automaticNameMaxLength: 30,
       cacheGroups: {
         vendors: { // split third-party modules first
+          name: 'chunk-vendors',
           test: /[\\/]node_modules[\\/]/,
-          priority: -10 // priority
+          priority: -10, // priority
+          chunks: 'initial'
         },
-        default: {
+        common: {
+          name: 'chunk-common',
           minChunks: 2,
           priority: -20,
+          chunks: 'initial',
           reuseExistingChunk: true
         }
       }
     }
   },
   module: {
+    noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
     rules: [
       {
         test: /\.vue$/,
@@ -77,7 +82,7 @@ const base = require('./webpack.base');
           {
             loader: 'file-loader',
             options: {
-              name: 'image/[contenthash].[ext]' // use url-loader to turn small img to base64
+              name: 'image/[hash:8].[ext]' // use url-loader to turn small img to base64
             }
           },
           {
@@ -107,8 +112,32 @@ const base = require('./webpack.base');
         ]
       },
       {
-        test: /\.(woff|ttf|eot|)$/,
-        use: 'file-loader'
+        test: /\.(woff2?|ttf|eot|otf)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'fonts/[name].[hash:8].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 4096,
+              fallback: {
+                loader: 'file-loader',
+                options: {
+                  name: 'media/[name].[hash:8].[ext]'
+                }
+              }
+            }
+          }
+        ]
       },
       {
         test: /\.(le|c)ss$/,
